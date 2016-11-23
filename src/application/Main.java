@@ -11,7 +11,7 @@ public class Main extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("OnlineDictionaryUI.fxml"));
         Scene scene = new Scene(root, 600, 400);
-        stage.setTitle("FXML Welcome");
+        stage.setTitle("OnlineDictionary");
         stage.setScene(scene);
         stage.show();
     }
