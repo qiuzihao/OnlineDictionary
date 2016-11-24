@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws UnsupportedEncodingException {
         TransApi api = new TransApi(APP_ID, SECURITY_KEY);
 
-        String query = "apple";
+        String query = "apPle";
         String resultGet=api.getTransResult(query, "auto", "zh");
         System.out.println(resultGet);
          
@@ -19,6 +19,18 @@ public class Main {
         int endPos=resultGet.lastIndexOf('"');
         String resultProcessed=convert(resultGet.substring(startPos, endPos)); 
         System.out.println(resultProcessed);
+    }
+    
+    public String baiduSearch(String input) throws UnsupportedEncodingException
+    {
+    	TransApi api = new TransApi(APP_ID, SECURITY_KEY);
+ 
+        String resultGet=api.getTransResult(input, "auto", "zh"); 
+         
+        int startPos=resultGet.indexOf('d')+6;
+        int endPos=resultGet.lastIndexOf('"');
+        String resultProcessed=convert(resultGet.substring(startPos, endPos)); 
+        return resultProcessed+'\n';
     }
     
     public static String convert(String utfString){  

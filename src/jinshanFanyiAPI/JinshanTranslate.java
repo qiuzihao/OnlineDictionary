@@ -9,15 +9,13 @@ import java.net.URL;
 public class JinshanTranslate {
 
     public static void main(String[] args) {
-        new ReadByPost().start();
+    	String input="fuck";
+        String result=jinshanSearch(input);
+        System.out.println(result);
     }
-}
-
-class ReadByPost extends Thread{
-    @Override
-    public void run() {  
-    	String keyword="apple";
-        String str,result="";
+    
+    public static String jinshanSearch(String keyword) {  
+        String str,result="",return_str="";
         
         try { 
         	URL url = new URL("http://dict-co.iciba.com/api/dictionary.php?key=AA40B51CD58144F36356B7E9DB19E811&w="+keyword); 
@@ -29,29 +27,34 @@ class ReadByPost extends Thread{
         	            br.close(); 
             } catch(IOException e) { 
         	  System.out.println(e); 
-        }
-        System.out.println(result);
+        } 
         
-        int explains_index=result.toString().indexOf("acceptation")+12;
-        int end_index=result.toString().indexOf("</acceptation>");
+        int explains_index=result.toString().indexOf("<acceptation>")+13; 
+        int end_index=result.toString().indexOf("</acceptation>"); 
+        
         String expla=result.substring(explains_index,end_index);
-        System.out.println(expla);
+        return_str+=expla+'\n'; 
+        
       
-        String[] tokens=result.split("orig");
+        String[] tokens=result.split("orig"); 
+        
         int num_sentences=(tokens.length-1)/2; 
         
         for (int i=0;i<num_sentences;i++)
         {
         	int en_sentence_index=tokens[2*i+1].indexOf(">")+1;
-            int en_end_index=tokens[2*i+1].indexOf(".</");
+            int en_end_index=tokens[2*i+1].indexOf("</");
             String en_sentence=tokens[2*i+1].substring(en_sentence_index,en_end_index);
-            System.out.println(en_sentence);
+            return_str+=en_sentence+'\n'; 
             
             int ch_sentence_index=tokens[2*i+2].indexOf("><")+8;
-            int ch_end_index=tokens[2*i+2].indexOf(".</");
+            int ch_end_index=tokens[2*i+2].indexOf("</");
             String ch_sentence=tokens[2*i+2].substring(ch_sentence_index,ch_end_index);
-            System.out.println(ch_sentence);
+            return_str+=ch_sentence+'\n'; 
         }
         
+        return return_str;
      }
 }
+
+ 

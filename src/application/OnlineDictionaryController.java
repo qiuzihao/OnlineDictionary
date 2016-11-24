@@ -1,5 +1,6 @@
 package application;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -12,9 +13,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import jinshanFanyiAPI.JinshanTranslate;
+import youdaoFanyiAPI.YoudaoTranslate;
+
 
 public class OnlineDictionaryController implements Initializable
-{
+{ 
+	
+	baiduFanyiAPI.Main main_baiduFanyi=new baiduFanyiAPI.Main();
+	jinshanFanyiAPI.JinshanTranslate main_jinshanFanyi=new jinshanFanyiAPI.JinshanTranslate();
+	youdaoFanyiAPI.YoudaoTranslate main_youdaoFanyi=new youdaoFanyiAPI.YoudaoTranslate();
+	
 	/****************************/
 	/*           Tag 1          */
 	/****************************/
@@ -26,9 +35,11 @@ public class OnlineDictionaryController implements Initializable
 	@FXML private CheckBox cbYoudao;
 	@FXML private CheckBox cbJinshan;
 	
-	@FXML private TextField translateResult1;
-	@FXML private TextField translateResult2;
-	@FXML private TextField translateResult3;
+	@FXML private TextArea taResult1;
+	@FXML private TextArea taResult2;
+	@FXML private TextArea taResult3;
+	
+	@FXML private TextField tfStatus;
 	 
 	@FXML private Button praise1;
 	@FXML private Button praise2;
@@ -36,10 +47,30 @@ public class OnlineDictionaryController implements Initializable
 	
 	@FXML private ListView<String> similarWordList;
 	
+	//if the input string is a legal word ,return true; otherwise return false;
+	public boolean isLegal(String input)
+	{
+		for (int i=0;i<input.length();i++)
+		{ 
+			if (!Character.isAlphabetic(input.charAt(i)))
+			{
+				tfStatus.setText("´íÎó£ºÊäÈëº¬ÓÐ·Ç×ÖÄ¸×Ö·û£¡");
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	//btSearch  btShare
 	@FXML  
-	private void btSearchPressed(ActionEvent event) {  
-	    tfInput.setText("search");  
+	private void btSearchPressed(ActionEvent event) throws UnsupportedEncodingException {  
+	    String input=tfInput.getText().trim();   
+	    if (!isLegal(input)) return;
+	    input=input.toLowerCase();
+	    taResult1.setText(main_baiduFanyi.baiduSearch(input));
+	    taResult2.setText(YoudaoTranslate.youdaoSearch(input));
+	    taResult3.setText(JinshanTranslate.jinshanSearch(input));
+	    
 	}  
 	@FXML  
 	private void btSharePressed(ActionEvent event) {  

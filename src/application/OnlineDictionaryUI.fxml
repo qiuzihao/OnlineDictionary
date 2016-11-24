@@ -54,19 +54,19 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField fx:id="translateResult1" prefHeight="83.0" prefWidth="280.0" />
+                                    <TextArea fx:id="taResult1" prefHeight="78.0" prefWidth="281.0" />
                                     <Button fx:id="praise1" mnemonicParsing="false" onAction="#praise1Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField fx:id="translateResult2" prefHeight="82.0" prefWidth="280.0" />
+                                    <TextArea fx:id="taResult2" prefHeight="78.0" prefWidth="281.0" />
                                     <Button fx:id="praise2" mnemonicParsing="false" onAction="#praise2Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField fx:id="translateResult3" prefHeight="83.0" prefWidth="280.0" />
+                                    <TextArea fx:id="taResult3" prefHeight="78.0" prefWidth="282.0" />
                                     <Button fx:id="praise3" mnemonicParsing="false" onAction="#praise3Pressed" text="点赞" />
                                  </children>
                               </HBox>
@@ -153,4 +153,7 @@
         </tabs>
       </TabPane>
    </center>
+   <bottom>
+      <TextField fx:id="tfStatus" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>
