@@ -1,6 +1,5 @@
 package application;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,6 +22,7 @@ public class OnlineDictionaryController implements Initializable
 	baiduFanyiAPI.Main main_baiduFanyi=new baiduFanyiAPI.Main();
 	jinshanFanyiAPI.JinshanTranslate main_jinshanFanyi=new jinshanFanyiAPI.JinshanTranslate();
 	youdaoFanyiAPI.YoudaoTranslate main_youdaoFanyi=new youdaoFanyiAPI.YoudaoTranslate();
+	
 	
 	/****************************/
 	/*           Tag 1          */
@@ -47,8 +47,24 @@ public class OnlineDictionaryController implements Initializable
 	
 	@FXML private ListView<String> similarWordList;
 	
+	//检查网络是否连接
+	public boolean checkInternet()  
+	{
+		try {
+			if (Main.testConnection()) {
+				tfStatus.setText("网络已连接"); 
+				return true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tfStatus.setText("错误：网络未连接！");
+		return false;
+	}
+	
 	//if the input string is a legal word ,return true; otherwise return false;
-	public boolean isLegal(String input)
+	public boolean isLegal(String input) throws Exception
 	{
 		for (int i=0;i<input.length();i++)
 		{ 
@@ -63,8 +79,10 @@ public class OnlineDictionaryController implements Initializable
 	
 	//btSearch  btShare
 	@FXML  
-	private void btSearchPressed(ActionEvent event) throws UnsupportedEncodingException {  
-	    String input=tfInput.getText().trim();   
+	private void btSearchPressed(ActionEvent event) throws Exception {  
+		checkInternet();
+	    String input=tfInput.getText().trim();  
+	    if (input.length()==0) return;
 	    if (!isLegal(input)) return;
 	    input=input.toLowerCase();
 	    taResult1.setText(main_baiduFanyi.baiduSearch(input));

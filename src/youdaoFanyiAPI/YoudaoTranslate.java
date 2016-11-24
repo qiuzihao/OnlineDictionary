@@ -14,7 +14,7 @@ import java.net.URL;
 public class YoudaoTranslate {
 
     public static void main(String[] args) {
-    	String input="apple";
+    	String input="fight";
         String result=youdaoSearch(input);
         System.out.println(result);
     }
@@ -54,7 +54,7 @@ public class YoudaoTranslate {
 
             br.close();
             isr.close();
-            is.close(); 
+            is.close();  
             
             int explains_index=builder.toString().indexOf("explains")+12;
             int end_index=builder.toString().indexOf("query")-5;
@@ -66,6 +66,8 @@ public class YoudaoTranslate {
             e.printStackTrace();
         }
         
+        //°Ñ\u2026»»³É...
+        result=result.replaceAll("u2026", "...");
         return result;
     }
     
