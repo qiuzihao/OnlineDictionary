@@ -31,7 +31,7 @@
                               </Label>
                               <TextField fx:id="tfInput" prefHeight="25.0" prefWidth="161.0" />
                               <Button fx:id="btSearch" mnemonicParsing="false" onAction="#btSearchPressed" prefHeight="25.0" prefWidth="55.0" text="搜索" />
-                              <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="分享单词卡">
+                              <Button fx:id="btShare" mnemonicParsing="false" onAction="#btSharePressed" prefHeight="25.0" prefWidth="95.0" text="分享单词卡">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
@@ -40,34 +40,34 @@
                         </HBox>
                      </top>
                      <left>
-                        <ListView prefHeight="249.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                        <ListView fx:id="similarWordList" prefHeight="249.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </left>
                      <center>
                         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                            <children>
                               <HBox prefHeight="51.0" prefWidth="400.0">
                                  <children>
-                                    <CheckBox mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="百度" />
-                                    <CheckBox mnemonicParsing="false" prefHeight="35.0" prefWidth="99.0" text="有道" />
-                                    <CheckBox mnemonicParsing="false" prefHeight="35.0" prefWidth="100.0" text="金山" />
+                                    <CheckBox fx:id="cbBaidu" mnemonicParsing="false" onAction="#cbBaiduChoosed" prefHeight="35.0" prefWidth="100.0" text="百度" />
+                                    <CheckBox fx:id="cbYoudao" mnemonicParsing="false" onAction="#cbYoudaoChoosed" prefHeight="35.0" prefWidth="99.0" text="有道" />
+                                    <CheckBox fx:id="cbJinshan" mnemonicParsing="false" onAction="#cbJinshanChoosed" prefHeight="35.0" prefWidth="100.0" text="金山" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField prefHeight="83.0" prefWidth="280.0" />
-                                    <Button mnemonicParsing="false" text="点赞" />
+                                    <TextField fx:id="translateResult1" prefHeight="83.0" prefWidth="280.0" />
+                                    <Button fx:id="praise1" mnemonicParsing="false" onAction="#praise1Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField prefHeight="82.0" prefWidth="280.0" />
-                                    <Button mnemonicParsing="false" text="点赞" />
+                                    <TextField fx:id="translateResult2" prefHeight="82.0" prefWidth="280.0" />
+                                    <Button fx:id="praise2" mnemonicParsing="false" onAction="#praise2Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextField prefHeight="83.0" prefWidth="280.0" />
-                                    <Button mnemonicParsing="false" text="点赞" />
+                                    <TextField fx:id="translateResult3" prefHeight="83.0" prefWidth="280.0" />
+                                    <Button fx:id="praise3" mnemonicParsing="false" onAction="#praise3Pressed" text="点赞" />
                                  </children>
                               </HBox>
                            </children>
@@ -89,7 +89,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextField prefHeight="30.0" prefWidth="182.0" />
+                                    <TextField fx:id="usernameForLogIn" prefHeight="30.0" prefWidth="182.0" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -99,8 +99,8 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <PasswordField prefHeight="30.0" prefWidth="181.0" />
-                                    <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="64.0" text="登录" />
+                                    <PasswordField fx:id="passwordForLogIn" prefHeight="30.0" prefWidth="181.0" />
+                                    <Button fx:id="btLogIn" mnemonicParsing="false" onAction="#btLogInPressed" prefHeight="30.0" prefWidth="64.0" text="登录" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
@@ -110,7 +110,7 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Label>
-                                    <TextArea prefHeight="58.0" prefWidth="358.0" />
+                                    <TextArea fx:id="usersAtPresent" prefHeight="58.0" prefWidth="358.0" />
                                  </children>
                               </HBox>
                            </children>
@@ -128,20 +128,20 @@
                               <HBox prefHeight="53.0" prefWidth="600.0">
                                  <children>
                                     <Label alignment="CENTER" prefHeight="35.0" prefWidth="100.0" text="请输入用户名" />
-                                    <TextField prefHeight="35.0" prefWidth="190.0" />
+                                    <TextField fx:id="usernameForSignIn" prefHeight="35.0" prefWidth="190.0" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="58.0" prefWidth="600.0">
                                  <children>
                                     <Label alignment="CENTER" prefHeight="35.0" prefWidth="100.0" text="请输入密码" />
-                                    <PasswordField prefHeight="35.0" prefWidth="190.0" />
+                                    <PasswordField fx:id="passwordForSignIn" prefHeight="35.0" prefWidth="190.0" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="58.0" prefWidth="600.0">
                                  <children>
                                     <Label alignment="CENTER" prefHeight="35.0" prefWidth="101.0" text="请再次输入密码" />
-                                    <PasswordField prefHeight="35.0" prefWidth="190.0" />
-                                    <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="69.0" text="注册" />
+                                    <PasswordField fx:id="password2ForSignIn" prefHeight="35.0" prefWidth="190.0" />
+                                    <Button fx:id="btSignIn" mnemonicParsing="false" onAction="#btSignInPressed" prefHeight="34.0" prefWidth="69.0" text="注册" />
                                  </children>
                               </HBox>
                            </children>
@@ -154,4 +154,3 @@
       </TabPane>
    </center>
 </BorderPane>
-
