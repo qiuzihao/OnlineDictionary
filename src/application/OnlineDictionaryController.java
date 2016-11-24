@@ -15,9 +15,9 @@ import javafx.scene.control.TextField;
 
 public class OnlineDictionaryController implements Initializable
 {
-	/************************/
-	/*        Tag 1         */
-	/************************/
+	/****************************/
+	/*           Tag 1          */
+	/****************************/
 	@FXML private Button btSearch;
 	@FXML private TextField tfInput;
 	@FXML private Button btShare;
