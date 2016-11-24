@@ -11,11 +11,11 @@ public class Main {
     public static void main(String[] args) throws UnsupportedEncodingException {
         TransApi api = new TransApi(APP_ID, SECURITY_KEY);
 
-        String query = "apPle";
+        String query = "add";
         String resultGet=api.getTransResult(query, "auto", "zh");
         System.out.println(resultGet);
          
-        int startPos=resultGet.indexOf('d')+6;
+        int startPos=resultGet.indexOf("dst")+6;
         int endPos=resultGet.lastIndexOf('"');
         String resultProcessed=convert(resultGet.substring(startPos, endPos)); 
         System.out.println(resultProcessed);
@@ -27,7 +27,7 @@ public class Main {
  
         String resultGet=api.getTransResult(input, "auto", "zh"); 
          
-        int startPos=resultGet.indexOf('d')+6;
+        int startPos=resultGet.indexOf("dst")+6;
         int endPos=resultGet.lastIndexOf('"');
         String resultProcessed=convert(resultGet.substring(startPos, endPos)); 
         return resultProcessed+'\n';

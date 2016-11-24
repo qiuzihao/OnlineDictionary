@@ -7,12 +7,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnlineDictionaryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.OnlineDictionaryController">
    <top>
-      <Label alignment="CENTER" prefHeight="55.0" prefWidth="187.0" text="网络在线词典" BorderPane.alignment="CENTER">
+      <Label alignment="CENTER" mnemonicParsing="true" prefHeight="55.0" prefWidth="187.0" text="网络在线词典" BorderPane.alignment="CENTER">
          <font>
             <Font size="27.0" />
          </font>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </Label>
    </top>
    <center>
@@ -29,7 +32,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="tfInput" prefHeight="25.0" prefWidth="161.0" />
+                              <TextField fx:id="tfInput" prefHeight="25.0" prefWidth="220.0" />
                               <Button fx:id="btSearch" mnemonicParsing="false" onAction="#btSearchPressed" prefHeight="25.0" prefWidth="55.0" text="搜索" />
                               <Button fx:id="btShare" mnemonicParsing="false" onAction="#btSharePressed" prefHeight="25.0" prefWidth="95.0" text="分享单词卡">
                                  <opaqueInsets>
@@ -54,19 +57,19 @@
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextArea fx:id="taResult1" prefHeight="78.0" prefWidth="281.0" />
+                                    <TextArea fx:id="taResult1" prefHeight="97.0" prefWidth="423.0" />
                                     <Button fx:id="praise1" mnemonicParsing="false" onAction="#praise1Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextArea fx:id="taResult2" prefHeight="78.0" prefWidth="281.0" />
+                                    <TextArea fx:id="taResult2" prefHeight="98.0" prefWidth="424.0" />
                                     <Button fx:id="praise2" mnemonicParsing="false" onAction="#praise2Pressed" text="点赞" />
                                  </children>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="400.0">
                                  <children>
-                                    <TextArea fx:id="taResult3" prefHeight="78.0" prefWidth="282.0" />
+                                    <TextArea fx:id="taResult3" prefHeight="98.0" prefWidth="422.0" />
                                     <Button fx:id="praise3" mnemonicParsing="false" onAction="#praise3Pressed" text="点赞" />
                                  </children>
                               </HBox>
@@ -154,6 +157,6 @@
       </TabPane>
    </center>
    <bottom>
-      <TextField fx:id="tfStatus" BorderPane.alignment="CENTER" />
+      <TextField fx:id="tfStatus" prefHeight="30.0" prefWidth="744.0" BorderPane.alignment="CENTER" />
    </bottom>
 </BorderPane>
