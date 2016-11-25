@@ -179,16 +179,16 @@ public class OnlineDictionaryController implements Initializable
 		
 	//cbBaidu cbYoudao cbJinshan
 	@FXML  
-	private void cbBaiduChoosed(ActionEvent event) {  
-	    tfInput.setText("baidu");  
+	private void cbBaiduChoosed(ActionEvent event) {   
+		
 	} 
 	@FXML  
 	private void cbYoudaoChoosed(ActionEvent event) {  
-	    tfInput.setText("youdao");  
+		
 	} 
 	@FXML  
 	private void cbJinshanChoosed(ActionEvent event) {  
-	    tfInput.setText("jinshan");  
+		
 	} 
 		
 	//praise1 praise2 praise3
