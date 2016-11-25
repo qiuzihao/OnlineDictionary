@@ -1,7 +1,11 @@
 package application;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,9 +19,17 @@ import javafx.scene.control.TextField;
 import jinshanFanyiAPI.JinshanTranslate;
 import youdaoFanyiAPI.YoudaoTranslate;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 
 public class OnlineDictionaryController implements Initializable
 { 
+	private LocalDictionaryEntry[] dictionary=new LocalDictionaryEntry[40000];    //存储所有本地单词的对象数组 
+	private int numberOfEntry=0;                    //词条总数
+	
 	//三个用于网络翻译的API接口类
 	baiduFanyiAPI.Main main_baiduFanyi=new baiduFanyiAPI.Main();
 	jinshanFanyiAPI.JinshanTranslate main_jinshanFanyi=new jinshanFanyiAPI.JinshanTranslate();
@@ -25,8 +37,7 @@ public class OnlineDictionaryController implements Initializable
 	
 	//负责与服务器进行通信的类
 	ConmunicateWithServer cws=new ConmunicateWithServer();
-
-	
+	   
 	/****************************/
 	/*           Tag 1          */
 	/****************************/
@@ -65,8 +76,22 @@ public class OnlineDictionaryController implements Initializable
 		tfStatus.setText("错误：网络未连接！");
 		return false;
 	}
-	
-	//if the input string is a legal word ,return true; otherwise return false;
+/*	
+	//读入本地词典 
+	public void readInLocalDictionary()
+	{
+		try {
+			myDictionary=new DictionaryData("d:/dictionary.txt");
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			return;
+		}
+	} 
+*/
+
+	//如果输入合法，返回真，否则返回假
 	public boolean isLegal(String input) throws Exception
 	{
 		for (int i=0;i<input.length();i++)
@@ -79,12 +104,14 @@ public class OnlineDictionaryController implements Initializable
 		}
 		return true;
 	}
-	
+	 
 	//btSearch  btShare
 	@FXML  
-	private void btSearchPressed(ActionEvent event) throws Exception {  
-		checkInternet();
-		
+	private void btSearchPressed(ActionEvent event) throws Exception {
+		//读入本地词典并检查网络连接
+//		readInLocalDictionary();
+		checkInternet(); 
+		   
 		//先清空
 		taResult1.setText("");
 	    taResult2.setText("");
@@ -236,10 +263,62 @@ public class OnlineDictionaryController implements Initializable
 	
 	/****************************/
 	/*     Initialization       */
-	/****************************/
+	/****************************/  
+	
+	public int findAssociationWord(String[] result,String entry)
+	{ 
+		int idx=0; 
+		for (int i=0;i<numberOfEntry && idx<500;i++)
+			if ((dictionary[i].getWord()).startsWith(entry)){
+				result[idx++]=dictionary[i].getWord();
+			} 
+		return idx;
+	}
+	
+	public class InputListener implements Runnable
+	{ 
+		private String[] words=new String[500];  //联想的单词 
+		 
+		//创建联想框事件监听 
+		public void run()
+		{ 
+			tfInput.textProperty().addListener(new InvalidationListener(){
+				public void invalidated(Observable ov){   
+					findAssociationWord(words,tfInput.getText()); 
+					similarWordList.setItems(FXCollections.observableArrayList(words));  
+				}
+			});
+		}
+	} 
+	
 	@Override  
 	public void initialize(URL url, ResourceBundle rb) {  
-	      // TODO  
-	}  
-	
+		 
+		//读入本地词典文件
+	    //本地词典
+		Scanner input = null;
+		try {
+			input = new Scanner(new File("d:/dictionary.txt"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		int i=0;
+		while (input.hasNext())
+		{
+			String oneEntry = input.nextLine(); 
+			String[] details = oneEntry.split("\t"); 
+			
+			if (details[0].equals("ID")) continue;
+			dictionary[i]=new LocalDictionaryEntry(Integer.parseInt(details[0]),
+			details[1],details[2],details[3]); 
+			i++; 
+			numberOfEntry++;
+		}  
+		
+		//增加对输入框的监听
+		Runnable inputListener=new InputListener();
+		Thread threadInputListener=new Thread(inputListener);  
+		threadInputListener.start();  //启动监听线程 
+	}   
 }

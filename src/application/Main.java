@@ -11,12 +11,12 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
  
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws Exception {  
         Parent root = FXMLLoader.load(getClass().getResource("OnlineDictionaryUI.fxml"));
         Scene scene = new Scene(root, 750, 480);
         stage.setTitle("OnlineDictionary");
         stage.setScene(scene);
-        stage.show();
+        stage.show();  
     }
     
     //判断是否连接上网络，连上返回true，否则返回false
@@ -36,8 +36,7 @@ public class Main extends Application {
     	   e.printStackTrace();
     	   throw e;
     	  } 
-    	  return false;
-    	 
+    	  return false; 
     }
 
  
@@ -45,3 +44,5 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+
