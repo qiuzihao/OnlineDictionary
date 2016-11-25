@@ -2,8 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ArrayList;
+import java.net.URL; 
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -21,8 +20,9 @@ import youdaoFanyiAPI.YoudaoTranslate;
 
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections; 
 
 
 public class OnlineDictionaryController implements Initializable
@@ -75,21 +75,7 @@ public class OnlineDictionaryController implements Initializable
 		}
 		tfStatus.setText("错误：网络未连接！");
 		return false;
-	}
-/*	
-	//读入本地词典 
-	public void readInLocalDictionary()
-	{
-		try {
-			myDictionary=new DictionaryData("d:/dictionary.txt");
-		}
-		catch(Exception ex)
-		{
-			ex.printStackTrace();
-			return;
-		}
 	} 
-*/
 
 	//如果输入合法，返回真，否则返回假
 	public boolean isLegal(String input) throws Exception
@@ -231,7 +217,7 @@ public class OnlineDictionaryController implements Initializable
 	private void praise3Pressed(ActionEvent event) {  
 	    tfInput.setText("p3");  
 	}
-	
+	 
 	
 	/*****************************/
 	/*         Tag2              */
@@ -281,13 +267,35 @@ public class OnlineDictionaryController implements Initializable
 		 
 		//创建联想框事件监听 
 		public void run()
-		{ 
+		{  
 			tfInput.textProperty().addListener(new InvalidationListener(){
 				public void invalidated(Observable ov){   
 					findAssociationWord(words,tfInput.getText()); 
 					similarWordList.setItems(FXCollections.observableArrayList(words));  
 				}
 			});
+		 /*	similarWordList.getSelectionModel().selectedItemProperty().addListener(
+					(ObservableValue<? extends String> observable, String oldValue, String newValue) ->{
+						if(newValue == null) return;
+						System.out.println(newValue);
+						tfInput.setText(newValue);  
+		        }); */
+			similarWordList.getSelectionModel().selectedItemProperty().addListener             
+		    (( obsVal, oldVal,newVal ) -> { 
+		    	tfInput.setText(newVal);  
+		      });
+		}
+	} 
+	
+	public class selectedWordToInput implements Runnable
+	{   
+		//创建联想框事件监听 
+		public void run()
+		{   
+			similarWordList.getSelectionModel().selectedItemProperty().addListener             
+		    	(( obsVal, oldVal,newVal ) -> { 
+		    		tfInput.setText(newVal);  
+		    	});
 		}
 	} 
 	
@@ -320,5 +328,11 @@ public class OnlineDictionaryController implements Initializable
 		Runnable inputListener=new InputListener();
 		Thread threadInputListener=new Thread(inputListener);  
 		threadInputListener.start();  //启动监听线程 
+		
+		Runnable selectedWordToInput=new InputListener();
+		Thread threadselectedWordToInput=new Thread(selectedWordToInput);  
+		threadselectedWordToInput.start();  //启动监听线程 
+		
+		
 	}   
 }
