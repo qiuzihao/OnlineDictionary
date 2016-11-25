@@ -18,11 +18,14 @@ import youdaoFanyiAPI.YoudaoTranslate;
 
 public class OnlineDictionaryController implements Initializable
 { 
-	
+	//三个用于网络翻译的API接口类
 	baiduFanyiAPI.Main main_baiduFanyi=new baiduFanyiAPI.Main();
 	jinshanFanyiAPI.JinshanTranslate main_jinshanFanyi=new jinshanFanyiAPI.JinshanTranslate();
 	youdaoFanyiAPI.YoudaoTranslate main_youdaoFanyi=new youdaoFanyiAPI.YoudaoTranslate();
 	
+	//负责与服务器进行通信的类
+	ConmunicateWithServer cws=new ConmunicateWithServer();
+
 	
 	/****************************/
 	/*           Tag 1          */
@@ -81,13 +84,92 @@ public class OnlineDictionaryController implements Initializable
 	@FXML  
 	private void btSearchPressed(ActionEvent event) throws Exception {  
 		checkInternet();
+		
+		//先清空
+		taResult1.setText("");
+	    taResult2.setText("");
+	    taResult3.setText("");
+		
 	    String input=tfInput.getText().trim();  
-	    if (input.length()==0) return;
+	    if (input.length()==0) {
+	    	tfStatus.setText("请输入单词");
+	    	return;
+	    }
 	    if (!isLegal(input)) return;
 	    input=input.toLowerCase();
-	    taResult1.setText(main_baiduFanyi.baiduSearch(input));
-	    taResult2.setText(YoudaoTranslate.youdaoSearch(input));
-	    taResult3.setText(JinshanTranslate.jinshanSearch(input));
+	    
+	    //从服务器获得用户点赞信息
+	    int[] praises=ConmunicateWithServer.getNumOfPraises(input);
+	    
+	    //根据复选框和点赞次数综合决定显示次序
+	    //一个未选
+	    if (!cbBaidu.isSelected() && !cbYoudao.isSelected() && !cbJinshan.isSelected()){
+	    	tfStatus.setText("要想获得结果，至少要选择一个翻译结果");
+	    	return;
+	    }
+	    //只选1个
+	    else if (cbBaidu.isSelected() && !cbYoudao.isSelected() && !cbJinshan.isSelected()){
+	    	taResult1.setText(main_baiduFanyi.baiduSearch(input));
+	    	return;
+	    }
+	    else if (!cbBaidu.isSelected() && cbYoudao.isSelected() && !cbJinshan.isSelected()){
+	    	taResult1.setText(YoudaoTranslate.youdaoSearch(input));
+	    	return;
+	    }
+	    else if (!cbBaidu.isSelected() && !cbYoudao.isSelected() && cbJinshan.isSelected()){
+	    	taResult1.setText(JinshanTranslate.jinshanSearch(input));
+	    	return;
+	    }
+	    //选了2个
+	    else if (cbBaidu.isSelected() && cbYoudao.isSelected() && !cbJinshan.isSelected()){
+	    	if (praises[0]>praises[1]){
+	    		taResult1.setText(main_baiduFanyi.baiduSearch(input));
+	    		taResult2.setText(YoudaoTranslate.youdaoSearch(input));
+	    		return;
+	    	}
+	    	taResult1.setText(YoudaoTranslate.youdaoSearch(input));
+    		taResult2.setText(main_baiduFanyi.baiduSearch(input)); 
+	    	return;
+	    }
+	    else if (cbBaidu.isSelected() && !cbYoudao.isSelected() && cbJinshan.isSelected()){
+	    	if (praises[0]>praises[2]){
+	    		taResult1.setText(main_baiduFanyi.baiduSearch(input));
+	    		taResult2.setText(JinshanTranslate.jinshanSearch(input));
+	    		return;
+	    	}
+	    	taResult1.setText(JinshanTranslate.jinshanSearch(input));
+    		taResult2.setText(main_baiduFanyi.baiduSearch(input)); 
+	    	return;
+	    }
+	    else if (!cbBaidu.isSelected() && cbYoudao.isSelected() && cbJinshan.isSelected()){
+	    	if (praises[1]>praises[2]){
+	    		taResult1.setText(YoudaoTranslate.youdaoSearch(input));
+	    		taResult2.setText(JinshanTranslate.jinshanSearch(input));
+	    		return;
+	    	}
+	    	taResult1.setText(JinshanTranslate.jinshanSearch(input));
+    		taResult2.setText(YoudaoTranslate.youdaoSearch(input)); 
+	    	return;
+	    }
+	    //三个都选
+	    String s1="",s2="",s3="";
+	    if (praises[0]>=praises[1]&&praises[1]>=praises[2]) {s1=main_baiduFanyi.baiduSearch(input);  //012
+	    	s2=YoudaoTranslate.youdaoSearch(input);s3=JinshanTranslate.jinshanSearch(input);}
+	    else if (praises[0]>=praises[1]&&praises[0]>=praises[2]&&praises[2]>=praises[1]) {s1=main_baiduFanyi.baiduSearch(input);//021
+    		s2=JinshanTranslate.jinshanSearch(input);s3=YoudaoTranslate.youdaoSearch(input);}
+	    
+	    else if (praises[1]>=praises[2]&&praises[2]>=praises[0]) {s1=YoudaoTranslate.youdaoSearch(input);//120
+    		s2=JinshanTranslate.jinshanSearch(input);s3=main_baiduFanyi.baiduSearch(input);}
+	    else if (praises[1]>=praises[2]&&praises[1]>=praises[0]&&praises[0]>=praises[2]) {s1=YoudaoTranslate.youdaoSearch(input);//102
+    		s2=main_baiduFanyi.baiduSearch(input);s3=JinshanTranslate.jinshanSearch(input);}
+	    
+	    else if (praises[2]>=praises[1]&&praises[1]>=praises[0]) {s1=JinshanTranslate.jinshanSearch(input);//210
+    		s2=YoudaoTranslate.youdaoSearch(input);s3=main_baiduFanyi.baiduSearch(input);}
+	    else if (praises[2]>=praises[1]&&praises[2]>=praises[0]&&praises[0]>=praises[1]) {s1=JinshanTranslate.jinshanSearch(input);//201
+    		s2=main_baiduFanyi.baiduSearch(input);s3=YoudaoTranslate.youdaoSearch(input);}
+	    taResult1.setText(s1);
+	    taResult2.setText(s2);
+	    taResult3.setText(s3);
 	    
 	}  
 	@FXML  
